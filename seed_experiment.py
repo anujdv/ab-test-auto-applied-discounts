@@ -48,7 +48,7 @@ def generate(output: Path, customers: int, seed: int, duckdb_output: Path | None
             discount = DISCOUNT_INR if converted and redeemed else 0.0
             refunded = bool(converted and rng.random() < 0.03)
             margin = (revenue * GROSS_MARGIN_RATE - discount) if converted and not refunded else 0.0
-            writer.writerow({"experiment_id": EXPERIMENT_ID, "customer_id": cid, "variant": variant, "eligible": True, "assigned_at": "2026-10-21T00:00:00Z", "exposed": exposed, "exposure_count": 1 if exposed else 0, "converted": converted, "order_count": int(converted), "revenue": f"{revenue:.2f}", "discount_cost": f"{discount:.2f}", "contribution_margin": f"{margin:.2f}", "refund": refunded, "payment_failed": bool(rng.random() < 0.02), "support_contact": bool(rng.random() < 0.04), "device": rng.choice(devices), "country": rng.choice(countries), "category": rng.choice(categories), "data_status": "SYNTHETIC"})
+            writer.writerow({"experiment_id": EXPERIMENT_ID, "customer_id": cid, "variant": variant, "eligible": True, "assigned_at": "2026-10-26T00:00:00Z", "exposed": exposed, "exposure_count": 1 if exposed else 0, "converted": converted, "order_count": int(converted), "revenue": f"{revenue:.2f}", "discount_cost": f"{discount:.2f}", "contribution_margin": f"{margin:.2f}", "refund": refunded, "payment_failed": bool(rng.random() < 0.02), "support_contact": bool(rng.random() < 0.04), "device": rng.choice(devices), "country": rng.choice(countries), "category": rng.choice(categories), "data_status": "SYNTHETIC"})
     print(f"Wrote {customers:,} synthetic rows to {output}")
     print("Reminder: generated outcomes are illustrative and must not be presented as real findings.")
     if duckdb_output is not None:
