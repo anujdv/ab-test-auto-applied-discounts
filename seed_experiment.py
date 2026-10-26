@@ -35,7 +35,7 @@ def generate(output: Path, customers: int, seed: int, duckdb_output: Path | None
     countries = ("IN", "US", "GB", "CA")
     categories = ("apparel", "home", "beauty")
     with output.open("w", newline="", encoding="utf-8") as f:
-        f.write("# SYNTHETIC illustrative data; not real customer data or experiment results\n")
+        f.write("# SYNTHETIC illustrative data; not real customer data or experiment results\r\n")
         writer = csv.DictWriter(f, fieldnames=fields)
         writer.writeheader()
         for i in range(customers):
