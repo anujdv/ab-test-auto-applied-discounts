@@ -32,13 +32,18 @@ Option 3 compares automatically applying an eligible discount at checkout with r
 
 ## Quick start
 
-Requires Python 3.10+; the generator and statistics helper use only the standard library.
+Requires Python 3.10+ and DuckDB. Install the single external dependency, then generate the default 15,000-row synthetic CSV and local DuckDB database:
 
 ```bash
-python seed_experiment.py --customers 20000 --seed 20261021 --output data/synthetic_experiment.csv
+python -m pip install -r requirements.txt
+python seed_experiment.py --seed 20261021
 ```
 
-The generated dataset is synthetic and is not evidence about real customer behavior. Open `analysis/analysis.ipynb` in Jupyter to start a readout after loading data and explicitly confirming the analysis dataset.
+The generated CSV is at `data/synthetic_experiment.csv`; the DuckDB database is at `data/experiment.duckdb` with an `experiment_events` table. Pass `--csv-only` to write only the CSV. To use a different size, pass `--customers N`.
+
+The default is sized for the illustrative 18.5% baseline and +1.85 pp MDE in `PRE_REGISTRATION.md`. A previous 20% baseline / +1.0 pp design requires about 52,800 total customers, so 55,000 is appropriate only if that smaller MDE is retained. Neither simulated sample size nor simulated outcomes are evidence about real customer behavior.
+
+All generated data is synthetic and is not evidence about real customer behavior. Open `analysis/analysis.ipynb` in Jupyter to start a readout after loading data and explicitly confirming the analysis dataset.
 
 ## Before analyzing any experiment
 
@@ -51,4 +56,3 @@ The generated dataset is synthetic and is not evidence about real customer behav
 ## Data and credentials
 
 The repository contains no live credentials or real customer records. `.env.example` lists placeholders only; `.env` is ignored. SQL snippets assume a BigQuery-style table named `project.dataset.experiment_events`, with columns documented in `DESIGN.md`.
-

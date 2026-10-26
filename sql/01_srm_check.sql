@@ -1,5 +1,7 @@
 -- BigQuery Standard SQL. Run before viewing outcome metrics.
 -- Assumes one row per eligible randomized customer; adapt table/filters.
+-- For a prespecified 50/50 split, p < 0.001 (df=1) is the hard investigate gate.
+-- chi-square >= 10.827566 is equivalent to p < 0.001; this flags SRM, not its cause.
 WITH assigned AS (
   SELECT customer_id, variant
   FROM `project.dataset.experiment_events`
@@ -28,7 +30,5 @@ SELECT total_n, control_n, treatment_n,
        SAFE_DIVIDE(control_n, total_n) AS control_share,
        SAFE_DIVIDE(treatment_n, total_n) AS treatment_share,
        chi_square, ERFC(SQRT(chi_square / 2)) AS p_value_df1,
-       chi_square >= 3.841459 AS srm_p_below_0_05
+       chi_square >= 10.827566 AS srm_investigate_p_below_0_001
 FROM chi;
-
-

@@ -34,18 +34,21 @@ The policy is only favorable if contribution margin per eligible customer remain
 
 ## Preliminary planning assumptions — validate before registration
 
-These are placeholders for planning, not historical facts or observed results.
+These are placeholders for planning, not historical facts or observed results. The economic scenario below is illustrative and must be replaced with validated Finance inputs.
 
 | Parameter | Preliminary assumption | Required action |
 |---|---:|---|
-| Control conversion | 20% | Replace with a trustworthy baseline for the exact eligible population |
-| Minimum detectable absolute lift | +1.0 percentage point | Confirm this is economically worthwhile |
+| Control conversion | 18.5% | Replace with a trustworthy baseline for the exact eligible population |
+| Minimum detectable absolute lift | +1.85 percentage points | Confirm it is both economically worthwhile and feasible |
 | Allocation | 50/50 | Confirm operational capacity and any rollout constraints |
 | Significance level | 5%, two-sided | Confirm with analytics policy |
 | Power | 80% | Confirm before sample-size calculation |
 | Outcome window | 7 days | Confirm attribution and refund maturation windows |
+| Economic scenario | ₹2,500 AOV; 40% pre-discount gross margin; ₹150 discount; 60% manual redemption in Control and 100% in Treatment | Validate with Finance; illustration only |
 
-With independent users, a two-sided two-proportion test, baseline 20%, MDE +1.0 pp, alpha 0.05, and power 80%, an approximate requirement is **about 26,400 customers per arm** (recompute with validated inputs and an approved method). Increase target only for prespecified clustering, delayed outcomes, or data loss. Do not stop early based on interim significance unless a sequential design is preregistered.
+Under that economic scenario, Control gross profit per converter is ₹1,000 − (0.60 × ₹150) = ₹910; Treatment gross profit per converter is ₹1,000 − ₹150 = ₹850. Break-even treatment conversion is 18.5% × ₹910 / ₹850 = 19.8059%, an absolute lift of about **+1.31 percentage points** (+7.1% relative). This is a conditional scenario calculation, not an observed business result. A +1.0 pp conversion lift would not break even on this simplified gross-profit model. The proposed +1.85 pp MDE is a rounded, more conservative planning target; it is not a claim that the effect will occur or that margin/other costs are immaterial.
+
+With independent users, a two-sided two-proportion test, baseline 18.5%, MDE +1.85 pp, alpha 0.05, and power 80%, a normal-approximation calculation requires about **7,200 customers per arm (14,400 total)**. Use a validated sample-size implementation before registration. Increase the target only for prespecified clustering, delayed outcomes, or data loss. Do not stop early based on interim significance unless a sequential design is preregistered. For comparison, the prior 20% baseline / +1.0 pp plan needs roughly 26,400 per arm (52,800 total); a 55,000-customer seed default would align with that smaller MDE, not with the economically motivated +1.85 pp target.
 
 ## Decision rule (draft; approve before launch)
 
@@ -59,4 +62,3 @@ With independent users, a two-sided two-proportion test, baseline 20%, MDE +1.0 
 | Date | Change | Author / approver |
 |---|---|---|
 | [date] | Initial draft; assumptions remain unvalidated | [name] |
-

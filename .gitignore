@@ -13,7 +13,7 @@ __pycache__/
 .Python
 build/
 dist/
-*.egg-info/
+*.egg-info
 .eggs/
 .wheels/
 
@@ -33,6 +33,7 @@ ENV/
 .DS_Store
 Thumbs.db
 
-# Generated datasets (synthetic or sensitive)
+# Generated datasets and local databases (synthetic or sensitive)
 data/*.csv
-
+data/*.duckdb
+data/*.duckdb.wal
