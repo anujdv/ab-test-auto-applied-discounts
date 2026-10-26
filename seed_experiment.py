@@ -63,7 +63,7 @@ def generate(output: Path, customers: int, seed: int, duckdb_output: Path | None
         with duckdb.connect(str(duckdb_output)) as connection:
             connection.execute(
                 "CREATE OR REPLACE TABLE experiment_events AS "
-                "SELECT * FROM read_csv_auto(?, comment='#', header=true)",
+                "SELECT * FROM read_csv_auto(?, skip=1, header=true)",
                 [str(output.resolve())],
             )
         print(f"Wrote synthetic experiment_events table to {duckdb_output}")
