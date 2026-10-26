@@ -1,8 +1,8 @@
 # Auto-applied discount vs manual coupon at checkout
 
-> **Status: planned project template. No experiment has run and no findings are reported.** All data produced by `seed_experiment.py` is synthetic and exists only to demonstrate a reproducible workflow.
+> **Status: synthetic practice plan frozen; no real experiment has run and no findings are reported.** All data produced by `seed_experiment.py` is synthetic and exists only to demonstrate a reproducible workflow.
 
-Option 3 compares automatically applying an eligible discount at checkout with requiring customers to enter a coupon code. The project is designed as an end-to-end experimentation case study: pre-registration, assignment, data-quality checks, intent-to-treat analysis, and a decision memo.
+Experiment IDs for this practice simulation are 301 (Control variant 3011; Treatment variant 3012). The synthetic data and templates use these numeric IDs.\n\nOption 3 compares automatically applying an eligible discount at checkout with requiring customers to enter a coupon code. The project is designed as an end-to-end experimentation case study: pre-registration, assignment, data-quality checks, intent-to-treat analysis, and a decision memo.
 
 ## Executive summary (to complete after a real or clearly labeled simulated run)
 

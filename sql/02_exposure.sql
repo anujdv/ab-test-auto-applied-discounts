@@ -2,7 +2,7 @@
 WITH assigned AS (
   SELECT customer_id, variant, exposed, exposure_count, converted
   FROM `project.dataset.experiment_events`
-  WHERE experiment_id = 'auto_discount_vs_manual_coupon_v1'
+  WHERE experiment_id = 301
     AND eligible = TRUE
 )
 SELECT variant,

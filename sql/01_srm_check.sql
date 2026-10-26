@@ -5,7 +5,7 @@
 WITH assigned AS (
   SELECT DISTINCT customer_id, variant
   FROM `project.dataset.experiment_events`
-  WHERE experiment_id = 'auto_discount_vs_manual_coupon_v1'
+  WHERE experiment_id = 301
     AND eligible = TRUE
 ), counts AS (
   SELECT variant, COUNT(DISTINCT customer_id) AS observed_n

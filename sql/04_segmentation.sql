@@ -3,7 +3,7 @@
 WITH user_segments AS (
   SELECT customer_id, variant, converted, device, country, category
   FROM `project.dataset.experiment_events`
-  WHERE experiment_id = 'auto_discount_vs_manual_coupon_v1'
+  WHERE experiment_id = 301
     AND eligible = TRUE
 ), long_segments AS (
   SELECT customer_id, variant, converted, 'device' AS segment_type, device AS segment_value FROM user_segments

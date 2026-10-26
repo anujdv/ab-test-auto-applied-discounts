@@ -1,67 +1,95 @@
 # Pre-registration: automatic discount vs manual coupon
 
-> **SIMULATION PLAN — NOT A REAL EXPERIMENT REGISTRATION.** This dated plan is for generating and practicing analysis on synthetic data only. No customer database is connected, no real experiment has run, and no results are reported. The business assumptions below are illustrative and are not approved Finance inputs.
+> **FROZEN FOR A SYNTHETIC PRACTICE SIMULATION ONLY.** This plan is not a registration for a real customer experiment. The repository has no real customer data or live database connection. The assumptions are illustrative; no business or causal findings are reported.
 
 ## Contract metadata
 
-- Status: Simulation plan drafted; real experiment pending business and analytics approval
-- Owner: Anuj (repository owner; confirm before any real experiment)
-- Simulation plan timestamp (UTC): 2026-10-26 08:58
-- Planned simulation: Generate one synthetic customer-level dataset on 2026-10-26; this is not a live test window or a 14-day experiment
-- Experiment identifier: `auto_discount_vs_manual_coupon_v1`
-- Data classification: synthetic data only; real experiment data not supplied
+- Status: Frozen for the synthetic simulation; not approved for a live experiment
+- Owner: Anuj (repository owner; owner sign-off applies to this practice plan only)
+- Registration timestamp (UTC): 2026-10-26 09:26
+- Planned simulation: one synthetic customer-level dataset generated on 2026-10-26; this is not a live experiment window
+- Experiment ID: `301`
+- Control variant ID: `3011`
+- Treatment variant ID: `3012`
+- Data classification: synthetic only; no real experiment data supplied
 
 ## Business question and hypothesis
 
-**If** eligible customers receive their eligible discount automatically rather than entering a coupon, **then** checkout conversion per randomized eligible customer will increase, **because** automatic application removes redemption friction.
+**If** eligible shoppers receive their eligible discount automatically instead of entering the coupon, **then** checkout conversion per assigned shopper will increase, **because** automatic application removes the effort of entering a code.
 
-For a real business decision, the policy is only favorable if contribution margin per randomized eligible customer meets a Finance-approved non-inferiority bound and refund, payment failure, and support-contact guardrails stay within approved limits. Those thresholds have not been provided, so this simulation cannot support a rollout decision.
+This is a hypothesis for a practice exercise, not a finding. A real launch would also need to show that contribution margin per assigned shopper is acceptable and that approved refund, payment-failure, and support-contact limits are met. Finance and Product have not provided those real-world thresholds.
 
-## Variants and eligibility
+## Variants and simulation population
 
-- **Control (50%)**: synthetic eligible customer sees the offer and must enter the same coupon manually.
-- **Treatment (50%)**: same synthetic offer is applied automatically; simulated pricing, discount amount, copy, and checkout layout are otherwise held constant.
-- Simulation eligibility: every generated synthetic customer is eligible. This does not define eligibility for a real customer population.
-- Unit of randomization: stable synthetic customer ID. Assignment is generated deterministically and remains the same for that customer ID.
-- Real-experiment eligibility and exclusions (geography, customer state, cart rules, channel, employees, test accounts, bots, and ineligible carts) remain **to be defined before a real launch**. Do not exclude real participants after assignment based on behavior.
-
-## Outcomes and estimands
-
-- **Primary**: binary checkout conversion in the synthetic outcome record; use a 7-day outcome window as a planning example only. The generator creates a binary outcome and does not model the timing of a purchase within those seven days. For any real test, confirm the window and use every eligible randomized customer in the denominator (ITT).
-- **Key economic metric**: contribution margin per assigned synthetic customer, used only to demonstrate the calculation. For a real test, Finance must define source fields and how discounts, refunds, and variable costs are counted.
-- **Guardrails**: refund/cancellation, payment failure, discount cost per assigned customer, and checkout support-contact rates are generated as illustrative fields. Real thresholds and measurement windows remain to be agreed with Finance and Product.
-- **Exposure diagnostic**: share of assigned synthetic customers with a generated exposure flag. Exposure-based/ATT estimates are diagnostic only, not a replacement for ITT.
-
-## Preliminary planning assumptions — validate before real registration
-
-These are placeholders for planning, not historical facts or observed results. The economic scenario is illustrative and must be replaced with validated Finance inputs before any real experiment.
-
-| Parameter | Simulation assumption | Required action before real test |
+| Group | Numeric variant ID | Simulated experience |
 |---|---:|---|
-| Control conversion probability | 18.5% | Replace with a trustworthy baseline for the exact eligible population |
-| Treatment conversion probability | 20.35% | Synthetic illustration of a +1.85 pp difference; not an expected or observed result |
-| Minimum detectable absolute lift (MDE) | +1.85 percentage points | Confirm it is economically worthwhile and feasible |
-| Allocation | 50/50 | Confirm operational capacity and any rollout constraints |
-| Significance level | 5%, two-sided | Confirm with analytics policy |
-| Power | 80% | Recalculate with validated inputs and an approved method |
-| Outcome window | 7 days | Confirm attribution and refund maturation windows |
-| Economic scenario | ₹2,500 average order value; 40% pre-discount gross margin; ₹150 discount; 60% manual redemption in Control and 100% in Treatment | Illustrative only; validate with Finance |
+| Control | `3011` | Shopper must manually enter the coupon |
+| Treatment | `3012` | Same discount is applied automatically |
 
-Under that illustrative economic scenario, the assumed pre-discount gross margin per ₹2,500 order is ₹1,000 (₹2,500 × 40%). Control's average discount cost per converter is ₹90 (60% × ₹150), leaving ₹910. Treatment's discount is always applied, leaving ₹850. Break-even Treatment conversion is 18.5% × ₹910 / ₹850 = 19.8059%, or about **+1.31 percentage points** above Control (+7.1% relative). This is a conditional example, not an observed business result. A +1.0 pp lift would not break even under this simplified gross-profit calculation. The proposed +1.85 pp MDE is a rounded planning target above that estimated break-even point; it does not guarantee profitability or account for unmodeled costs.
+- Intended allocation: 50% Control / 50% Treatment.
+- Simulation population: all rows generated by `seed_experiment.py`; every generated shopper is marked eligible.
+- Randomization unit: one stable synthetic customer ID per generated row. The script deterministically assigns that ID to one group.
+- The dataset's geography, device, and category values are illustrative labels, not real eligibility rules or a representative customer sample.
+- Real eligibility, exclusions, channel, cart rules, and customer identity behavior remain to be defined before any live experiment.
 
-With independent users, a two-sided two-proportion test, baseline 18.5%, MDE +1.85 pp, alpha 0.05, and power 80%, a normal-approximation calculation requires about **7,200 customers per arm (14,400 total)**. The generator's 15,000 default is a convenient synthetic practice size near that target; actual generated group sizes may differ slightly from 50/50. Recalculate for a real test and increase the target only for prespecified clustering, delayed outcomes, or data loss. Do not stop early based on interim significance unless a sequential design is preregistered. For comparison, the previous 20% baseline / +1.0 pp plan needs roughly 26,400 per arm (52,800 total); a 55,000-customer seed default would align with that smaller MDE, not with this +1.85 pp target.
+## Outcomes and counting rules
 
-## Decision rule (simulation demonstration only; real thresholds pending)
+- **Primary outcome:** whether the synthetic shopper converts (makes a purchase). For practice, treat this as a binary outcome within a nominal 7-day window after assignment. The generator creates the outcome immediately and does not model when within seven days the purchase occurs.
+- **Denominator:** all eligible synthetic shoppers assigned to each group, including those without an exposure flag or purchase. This is the intent-to-treat (ITT) comparison.
+- **Key economic measure:** contribution margin per assigned synthetic shopper. The script uses a simplified illustrative calculation; it is not a Finance-approved profit measure.
+- **Guardrails:** generated refund, payment-failure, discount-cost, and support-contact fields are for practicing summaries. There are no real guardrail thresholds in this simulation.
+- **Exposure:** generated exposure flags are diagnostic only; comparing exposed shoppers alone does not replace the ITT result.
 
-- Demonstrate the SRM check and validate synthetic instrumentation before viewing simulated outcome comparisons.
-- The simulated conversion comparison is a code/workflow demonstration only. Do not use it to recommend shipping, estimate actual business impact, or make claims about real customers.
-- For a real experiment, require a passing SRM check and valid instrumentation, then consider rollout only if the primary result favors Treatment and Finance-approved economic and guardrail thresholds pass.
-- Hold a real readout if evidence is inconclusive, economics fail, or an agreed guardrail crosses its harm threshold. Define exact thresholds with Finance and Product before launch.
-- One primary outcome and one planned analysis window. Segment analyses are exploratory and multiplicity-adjusted; no segment-only ship decision absent a new test.
-- The brief's 14-full-day minimum applies to a real test for weekly cycles; this synthetic one-shot dataset has no calendar runtime and cannot assess seasonality or novelty effects.
+For a real experiment, Finance and Product must confirm the outcome window, source fields, refund treatment, economic estimator, and guardrail thresholds before launch.
+
+## Frozen simulation assumptions
+
+Every number below is an assumption encoded for practice, not a historical baseline or expected real-world result.
+
+| Parameter | Frozen simulation value |
+|---|---:|
+| Control conversion probability in generator | 18.5% |
+| Treatment conversion probability in generator | 20.35% |
+| Difference encoded in generator | +1.85 percentage points |
+| Allocation | 50/50 target |
+| Significance level | 5%, two-sided |
+| Statistical power target | 80% |
+| Approximate sample-size target | 7,200 per group; 14,400 total |
+| Generator default | 15,000 synthetic shoppers |
+| Nominal outcome window | 7 days; timing is not simulated |
+| Average order value | ₹2,500 |
+| Gross margin before discount | 40% (₹1,000 per order in this simplified example) |
+| Discount amount | ₹150 |
+| Coupon redemption in Control | 60% of simulated converters |
+| Discount application in Treatment | 100% of simulated converters |
+
+### Illustrative break-even calculation
+
+Using only the simplified money assumptions above:
+
+- Control leaves ₹1,000 − (60% × ₹150) = **₹910 per purchase**, on average.
+- Treatment leaves ₹1,000 − ₹150 = **₹850 per purchase**.
+- If Control conversion is 18.5%, equal contribution per assigned shopper requires Treatment conversion of 18.5% × ₹910 / ₹850 = **19.81%**.
+- That is about **+1.31 percentage points** (about +7.1% relative) above Control.
+
+This calculation excludes unmodeled costs and is not a profit forecast. The encoded +1.85 pp difference is a simulation setting and a planning MDE, not a promised outcome. The assumed margin, redemption, order value, and discount must be replaced with verified inputs before any real business decision.
+
+### Sample-size rationale
+
+For independent shoppers, a two-sided two-proportion test with baseline 18.5%, +1.85 pp MDE, alpha 0.05, and 80% power gives a normal-approximation estimate of about **7,200 per group (14,400 total)**. The 15,000-row generator default is a rounded practice size near that target. Actual group counts can differ slightly from 50/50 because assignment is deterministic per ID.
+
+For comparison, the earlier 20% baseline / +1.0 pp design needs roughly 26,400 per group (52,800 total); the review's 55,000 default applied to that smaller MDE, not this frozen +1.85 pp simulation. Any live test needs a fresh sample-size calculation using validated inputs and its actual design.
+
+## Analysis and decision rules
+
+1. Check the assigned group split before examining conversion. For the planned 50/50 split, investigate when the SRM chi-square test has **p < 0.001** (df=1 cutoff approximately 10.828). A flag indicates a data/assignment issue to investigate; it does not identify the cause.
+2. For the practice readout, compare conversion by assigned group and demonstrate confidence intervals and the planned test. Label every output as synthetic.
+3. Do not use simulated results to recommend shipping, estimate real business impact, or make claims about actual shoppers. This simulation has no Ship/Stage/Hold decision.
+4. For a real test, freeze actual eligibility, dates, thresholds, and analysis details in a new approved registration. Run at least 14 full days as the project brief requests, and do not stop early based on significance unless a sequential plan is preregistered.
+5. Segment analyses are exploratory and multiplicity-adjusted; do not make a segment-only rollout decision from this practice dataset.
 
 ## Change log
 
-| Date | Change | Author / approver |
+| Date (UTC) | Change | Author / approver |
 |---|---|---|
-| 2026-10-26 | Clarified assumptions and scope for a synthetic practice run; real eligibility, dates, economics, and thresholds remain unapproved | Codex-assisted draft; owner review pending |
+| 2026-10-26 | Frozen numeric identifiers and illustrative assumptions for synthetic practice only; no live experiment authorized | Anuj, repository owner |

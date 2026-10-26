@@ -11,7 +11,9 @@ import hashlib
 import random
 from pathlib import Path
 
-EXPERIMENT_ID = "auto_discount_vs_manual_coupon_v1"
+EXPERIMENT_ID = 301
+CONTROL_VARIANT_ID = 3011
+TREATMENT_VARIANT_ID = 3012
 CONTROL_CONVERSION = 0.185  # preliminary economic scenario; validate before registration
 TREATMENT_CONVERSION = 0.2035  # illustrative +1.85 pp effect; not an empirical estimate
 AOV_INR = 2500.0  # illustrative only
@@ -19,7 +21,7 @@ GROSS_MARGIN_RATE = 0.40  # before discount; illustrative only
 DISCOUNT_INR = 150.0  # illustrative only
 CONTROL_COUPON_REDEMPTION = 0.60  # manual entry scenario; illustrative only
 
-def assign_variant(customer_id: str, experiment_id: str = EXPERIMENT_ID) -> str:
+def assign_variant(customer_id: str, experiment_id: int = EXPERIMENT_ID) -> str:
     digest = hashlib.sha256(f"{experiment_id}:{customer_id}".encode("utf-8")).digest()
     return "treatment" if int.from_bytes(digest[:8], "big") % 2 else "control"
 
@@ -28,7 +30,7 @@ def generate(output: Path, customers: int, seed: int, duckdb_output: Path | None
         raise ValueError("customers must be at least 1")
     rng = random.Random(seed)
     output.parent.mkdir(parents=True, exist_ok=True)
-    fields = ["experiment_id", "customer_id", "variant", "eligible", "assigned_at", "exposed", "exposure_count", "converted", "order_count", "revenue", "discount_cost", "contribution_margin", "refund", "payment_failed", "support_contact", "device", "country", "category", "data_status"]
+    fields = ["experiment_id", "variant_id", "customer_id", "variant", "eligible", "assigned_at", "exposed", "exposure_count", "converted", "order_count", "revenue", "discount_cost", "contribution_margin", "refund", "payment_failed", "support_contact", "device", "country", "category", "data_status"]
     devices = ("mobile", "desktop", "tablet")
     countries = ("IN", "US", "GB", "CA")
     categories = ("apparel", "home", "beauty")
@@ -39,6 +41,7 @@ def generate(output: Path, customers: int, seed: int, duckdb_output: Path | None
         for i in range(customers):
             cid = f"synthetic_customer_{i+1:07d}"
             variant = assign_variant(cid)
+            variant_id = CONTROL_VARIANT_ID if variant == "control" else TREATMENT_VARIANT_ID
             exposed = rng.random() < 0.96
             p = CONTROL_CONVERSION if variant == "control" else TREATMENT_CONVERSION
             converted = rng.random() < p
@@ -48,7 +51,7 @@ def generate(output: Path, customers: int, seed: int, duckdb_output: Path | None
             discount = DISCOUNT_INR if converted and redeemed else 0.0
             refunded = bool(converted and rng.random() < 0.03)
             margin = (revenue * GROSS_MARGIN_RATE - discount) if converted and not refunded else 0.0
-            writer.writerow({"experiment_id": EXPERIMENT_ID, "customer_id": cid, "variant": variant, "eligible": True, "assigned_at": "2026-10-26T00:00:00Z", "exposed": exposed, "exposure_count": 1 if exposed else 0, "converted": converted, "order_count": int(converted), "revenue": f"{revenue:.2f}", "discount_cost": f"{discount:.2f}", "contribution_margin": f"{margin:.2f}", "refund": refunded, "payment_failed": bool(rng.random() < 0.02), "support_contact": bool(rng.random() < 0.04), "device": rng.choice(devices), "country": rng.choice(countries), "category": rng.choice(categories), "data_status": "SYNTHETIC"})
+            writer.writerow({"experiment_id": EXPERIMENT_ID, "variant_id": variant_id, "customer_id": cid, "variant": variant, "eligible": True, "assigned_at": "2026-10-26T00:00:00Z", "exposed": exposed, "exposure_count": 1 if exposed else 0, "converted": converted, "order_count": int(converted), "revenue": f"{revenue:.2f}", "discount_cost": f"{discount:.2f}", "contribution_margin": f"{margin:.2f}", "refund": refunded, "payment_failed": bool(rng.random() < 0.02), "support_contact": bool(rng.random() < 0.04), "device": rng.choice(devices), "country": rng.choice(countries), "category": rng.choice(categories), "data_status": "SYNTHETIC"})
     print(f"Wrote {customers:,} synthetic rows to {output}")
     print("Reminder: generated outcomes are illustrative and must not be presented as real findings.")
     if duckdb_output is not None:

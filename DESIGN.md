@@ -36,7 +36,7 @@ The primary estimand is the **intent-to-treat (ITT)** difference in conversion a
 
 The SQL templates use BigQuery Standard SQL and assume `project.dataset.experiment_events` has one row per customer with:
 
-`experiment_id STRING`, `customer_id STRING`, `variant STRING` (`control`/`treatment`), `eligible BOOL`, `assigned_at TIMESTAMP`, `exposed BOOL`, `exposure_count INT64`, `converted BOOL`, `order_count INT64`, `revenue NUMERIC`, `discount_cost NUMERIC`, `contribution_margin NUMERIC`, `refund BOOL`, `payment_failed BOOL`, `support_contact BOOL`, `device STRING`, `country STRING`, `category STRING`.
+`experiment_id INT64` (301), `variant_id INT64` (3011/3012), `customer_id STRING`, `variant STRING` (`control`/`treatment`), `eligible BOOL`, `assigned_at TIMESTAMP`, `exposed BOOL`, `exposure_count INT64`, `converted BOOL`, `order_count INT64`, `revenue NUMERIC`, `discount_cost NUMERIC`, `contribution_margin NUMERIC`, `refund BOOL`, `payment_failed BOOL`, `support_contact BOOL`, `device STRING`, `country STRING`, `category STRING`.
 
 Adapt table and field names and verify grain before running. If source data is event-level, first build a deduplicated customer-level analysis table with a documented attribution rule.
 
