@@ -38,7 +38,8 @@ Windows PowerShell (using Python 3.14):
 py -3.14 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 .\.venv\Scripts\python.exe seed_experiment.py --seed 20261021
-.\.venv\Scripts\python.exe -m jupyterlab
+.\.venv\Scripts\Activate.ps1
+jupyter lab
 ```
 
 Then open `analysis/analysis.ipynb` in JupyterLab or VS Code and select the `.venv` Python kernel. On another Python version, replace `3.14` with the installed version. The generator writes `data/synthetic_experiment.csv` and `data/experiment.duckdb`; use `--csv-only` to skip DuckDB or `--customers N` to choose a different row count.
