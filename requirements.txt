@@ -1,1 +1,4 @@
 duckdb>=1.1,<2.0
+ipykernel>=6.29,<8.0
+jupyterlab>=4.0,<5.0
+pandas>=2.2,<4.0
