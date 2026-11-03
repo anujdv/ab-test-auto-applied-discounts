@@ -1,49 +1,46 @@
-# Decision memo — automatic discount vs manual coupon
+# Synthetic case-study readout — automatic discount vs manual coupon
 
-> **TEMPLATE — NO DECISION OR FINDINGS.** This memo is intentionally blank until an experiment is run and validated. Do not treat synthetic generator output as business evidence.
+> **SYNTHETIC PRACTICE RESULTS ONLY.** This was not a real customer experiment. Do not use this memo to recommend a real rollout or claim an effect on actual shoppers.
 
-**To:** VP, Product / Growth
-**From:** [Experiment owner]
-**Date:** [date]
-**Subject:** Decision on automatic discount application at checkout
+## Executive summary
 
-## Recommendation
+The notebook demonstrates a customer-level A/B analysis workflow using 15,000 generated records (seed `20261021`). The generator deliberately assigns a higher conversion probability to Treatment (20.35%) than Control (18.5%). The observed Treatment lift is therefore a programmed feature of the simulation, not evidence of causality.
 
-**Pending.** Select one only after the preregistered analysis: **Ship / Stage / Hold**.
+**No real Ship / Stage / Hold decision is made.** Real guardrail thresholds and Finance-approved economics were not provided.
 
-## Decision summary
+## Simulated scorecard
 
-| Measure | Control | Treatment | Difference / interval | Decision threshold | Status |
-|---|---:|---:|---:|---:|---|
-| Eligible randomized customers | [ ] | [ ] | — | Planned sample reached | Pending |
-| Checkout conversion | [ ] | [ ] | [ ] | Favorable, meets MDE rule | Pending |
-| Contribution margin / eligible customer | [ ] | [ ] | [ ] | [Finance threshold] | Pending |
-| Refund / cancellation rate | [ ] | [ ] | [ ] | [guardrail] | Pending |
-| Payment failure rate | [ ] | [ ] | [ ] | [guardrail] | Pending |
-| Support-contact rate | [ ] | [ ] | [ ] | [guardrail] | Pending |
-| SRM / instrumentation | [ ] | [ ] | — | Pass | Pending |
+| Measure | Control | Treatment | Treatment − Control | Practice interpretation |
+|---|---:|---:|---:|---|
+| Assigned customers | 7,561 | 7,439 | — | 15,000 total; each arm exceeds the approximate 7,200 target |
+| SRM check | 7,561 observed vs 7,500 expected | 7,439 observed vs 7,500 expected | χ²(1)=0.992, p=0.319 | No flag at the preregistered p < 0.001 investigate threshold |
+| ITT conversion | 1,432 / 7,561 (18.94%) | 1,522 / 7,439 (20.46%) | +1.52 pp; 95% CI +0.25 to +2.79 pp; p=0.0192 | Synthetic output; lift is encoded in generator |
+| Contribution margin / assigned customer | ₹168.15 | ₹169.22 | +₹1.08; approx. 95% interval −₹10.03 to +₹12.19 | Interval includes zero; illustrative model only |
+| Refund rate | 36 / 7,561 (0.48%) | 41 / 7,439 (0.55%) | — | Descriptive; no threshold specified |
+| Payment-failure rate | 146 / 7,561 (1.93%) | 152 / 7,439 (2.04%) | — | Descriptive; no threshold specified |
+| Support-contact rate | 316 / 7,561 (4.18%) | 308 / 7,439 (4.14%) | — | Descriptive; no threshold specified |
 
-## Evidence and economics
+## What the checks mean
 
-- Data source and analysis window: [fill in]
-- Primary ITT estimate, two-sided p-value, and 95% CI: [fill in]
-- Relative lift and interval: [fill in]
-- Assumptions for incremental eligible customers, discount expense, order value, and contribution margin: [fill in and source each]
-- Estimated impact: [currency and period; formula and sensitivity range]
+The generated assignment split is close to the planned 50/50 allocation. The SRM chi-square p-value is above 0.001, so this dataset does not trigger the predefined investigate rule. This checks the simulated counts; it does not validate a live assignment or logging system.
 
-No currency impact should be stated until Finance-approved inputs and a validated experiment readout are available. Keep estimates separate from observed experiment measurements.
+The conversion comparison is intent-to-treat: every assigned eligible synthetic customer is included, regardless of the exposure flag. The observed +1.52 pp estimate is below the planned +1.85 pp MDE, while its confidence interval spans values below and above +1.85 pp. The MDE is a planning input for sample size, not a guaranteed minimum effect or a pass/fail threshold.
 
-## Risks, rollout, and rollback
+## Economic assumptions and uncertainty
 
-- Key risks: [margin dilution, abuse, cross-device assignment, coupon stacking, operational errors]
-- Proposed rollout: [staged percentage and duration]
-- Monitoring owner and cadence: [name / frequency]
-- Rollback triggers and thresholds: [specific metric, threshold, and response]
-- Follow-up test: [if needed]
+The generator assumes average order value ₹2,500, gross margin before discount 40% (₹1,000 per order), a ₹150 discount, coupon use by 60% of Control converters, and automatic discounting for all Treatment converters. It sets contribution margin to zero for a refunded order and subtracts no other operating costs. These inputs are illustrative and are not Finance-approved.
 
-## Approval
+The reported large-sample interval for the mean margin difference uses the observed per-customer contribution-margin variance in each arm. It is approximately −₹10.03 to +₹12.19, so this simulated run does not establish a positive contribution-margin effect. The simple break-even scenario in the pre-registration also omits unmodeled costs and is not a profit forecast.
 
-- Product: [ ]
-- Finance: [ ]
-- Analytics: [ ]
+## Limitations
 
+- All customer IDs, assignment, outcomes, exposure flags, and financial values are synthetic.
+- Conversion probabilities are intentionally set to 18.5% for Control and 20.35% for Treatment.
+- Exposure is generated independently of conversion; the nominal seven-day window is not simulated over time.
+- Device, country, and category labels are illustrative, not representative.
+- No real guardrail thresholds or Finance-approved economic estimator were supplied.
+- No rollout recommendation or real business impact estimate follows from this dataset.
+
+## What a real decision would require
+
+Before a live experiment, the business would need to approve eligibility and identity rules, validated event and financial definitions, an outcome window, sample size based on verified inputs, guardrail thresholds, an exposure/instrumentation plan, and a preregistered decision rule. The live assignment and outcomes would then need validation before interpretation.
